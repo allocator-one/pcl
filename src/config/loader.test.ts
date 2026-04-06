@@ -13,6 +13,31 @@ describe('config/loader', () => {
       expect(result).toEqual({ provider: 'openai', model: 'gpt-5' });
     });
 
+    it('should parse provider/model format', () => {
+      const result = parseModelString('openai/gpt-5');
+      expect(result).toEqual({ provider: 'openai', model: 'gpt-5' });
+    });
+
+    it('should parse anthropic/model format', () => {
+      const result = parseModelString('anthropic/claude-opus-4-6');
+      expect(result).toEqual({ provider: 'anthropic', model: 'claude-opus-4-6' });
+    });
+
+    it('should parse google/model format', () => {
+      const result = parseModelString('google/gemini-2.5-pro');
+      expect(result).toEqual({ provider: 'google', model: 'gemini-2.5-pro' });
+    });
+
+    it('should parse openai-compat/model format', () => {
+      const result = parseModelString('openai-compat/llama3');
+      expect(result).toEqual({ provider: 'openai-compat', model: 'llama3' });
+    });
+
+    it('should parse openai-compat:model format', () => {
+      const result = parseModelString('openai-compat:llama3');
+      expect(result).toEqual({ provider: 'openai-compat', model: 'llama3' });
+    });
+
     it('should infer anthropic from claude- prefix', () => {
       const result = parseModelString('claude-sonnet-4');
       expect(result).toEqual({ provider: 'anthropic', model: 'claude-sonnet-4' });
@@ -33,8 +58,12 @@ describe('config/loader', () => {
       expect(result).toEqual({ provider: 'google', model: 'gemini-2.5-pro' });
     });
 
-    it('should throw on invalid provider', () => {
+    it('should throw on invalid provider (colon format)', () => {
       expect(() => parseModelString('invalid:model')).toThrow('Invalid provider "invalid"');
+    });
+
+    it('should throw on invalid provider (slash format)', () => {
+      expect(() => parseModelString('invalid/model')).toThrow('Invalid provider "invalid"');
     });
 
     it('should throw on unparseable string', () => {

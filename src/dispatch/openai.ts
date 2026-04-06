@@ -38,9 +38,14 @@ export class OpenAIAdapter implements ModelAdapter {
       params.temperature = request.temperature;
     }
 
-    // Add max_tokens if specified
+    // Add max tokens if specified — gpt-5.x and o-series require max_completion_tokens
     if (request.maxTokens) {
-      params.max_tokens = request.maxTokens;
+      const usesCompletionTokens = this.model.startsWith('gpt-5') || /^o[1-9]/.test(this.model);
+      if (usesCompletionTokens) {
+        params.max_completion_tokens = request.maxTokens;
+      } else {
+        params.max_tokens = request.maxTokens;
+      }
     }
 
     const response = await this.client.chat.completions.create(params);

@@ -30,7 +30,7 @@ export function buildConsensus(
     } catch (error) {
       errors.push({
         model: response.model,
-        error: error instanceof Error ? error.message : String(error),
+        error: error instanceof Error ? `${error.name}: ${error.message}` : String(error),
       });
     }
   }

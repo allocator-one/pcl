@@ -16,7 +16,8 @@ export async function loadConfig(overrides?: Partial<PlanCouncilConfig>): Promis
     // If result is null/undefined, no config file found - this is fine, no warning needed
   } catch (error) {
     // Only warn on actual parse errors (not missing file)
-    console.error('Warning: Failed to parse config file:', error instanceof Error ? error.message : String(error));
+    const errMsg = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
+    console.error('Warning: Failed to parse config file:', errMsg);
   }
 
   // Merge with overrides
@@ -56,7 +57,7 @@ export async function loadConfigPlugins(config: PlanCouncilConfig): Promise<void
     } catch (error) {
       // Surface the error with the specific plugin name so it is actionable
       console.error(
-        `Warning: Failed to load plugin '${pluginConfig.name}' from '${pluginConfig.path}': ${error instanceof Error ? error.message : String(error)}`
+        `Warning: Failed to load plugin '${pluginConfig.name}' from '${pluginConfig.path}': ${error instanceof Error ? `${error.name}: ${error.message}` : String(error)}`
       );
     }
   }
@@ -90,9 +91,14 @@ export function parseModelString(modelString: string): ModelConfig {
     };
   }
 
-  // Parse provider:model format
-  if (modelString.includes(':')) {
-    const [provider, model] = modelString.split(':', 2);
+  // Parse provider:model or provider/model format
+  const sepIdx = modelString.indexOf(':') !== -1
+    ? modelString.indexOf(':')
+    : modelString.indexOf('/');
+
+  if (sepIdx !== -1) {
+    const provider = modelString.slice(0, sepIdx);
+    const model = modelString.slice(sepIdx + 1);
     if (!isValidProvider(provider)) {
       throw new Error(`Invalid provider "${provider}". Valid providers: ${VALID_PROVIDERS.join(', ')}`);
     }

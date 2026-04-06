@@ -80,7 +80,7 @@ export async function dispatchToModelsStreaming(
       const errorResponse: PlanResponse = {
         content: '',
         model: modelConfig.model,
-        error: error instanceof Error ? error.message : String(error),
+        error: error instanceof Error ? `${error.name}: ${error.message}` : String(error),
       };
 
       // No cost recorded for failed models; derive current total from successes so far.
