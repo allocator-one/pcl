@@ -22,8 +22,13 @@ export class OpenAIAdapter implements ModelAdapter {
   async execute(request: PlanRequest): Promise<PlanResponse> {
     const capabilities = getModelCapabilities('openai', this.model);
 
+    // OpenAI requires the word "json" in the messages when using json_object response_format
+    const systemPrompt = request.systemPrompt.toLowerCase().includes('json')
+      ? request.systemPrompt
+      : `${request.systemPrompt}\n\nRespond in JSON format.`;
+
     const messages: OpenAI.ChatCompletionMessageParam[] = [
-      { role: 'system', content: request.systemPrompt },
+      { role: 'system', content: systemPrompt },
       { role: 'user', content: request.userPrompt },
     ];
 

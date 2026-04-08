@@ -163,7 +163,7 @@ async function checkGoogle(): Promise<DoctorResult> {
   }
 
   try {
-    const adapter = new GoogleAdapter(apiKey, 'gemini-2.0-flash-exp');
+    const adapter = new GoogleAdapter(apiKey, 'gemini-3.1-pro-preview');
 
     await adapter.execute({
       systemPrompt: 'You are a test.',
@@ -177,7 +177,7 @@ async function checkGoogle(): Promise<DoctorResult> {
       status: 'ok',
       message: 'Connected successfully',
       // Known models as of 2026; update when new models are released.
-      models: ['gemini-2.5-pro-exp-03-25', 'gemini-2.0-flash-thinking-exp-01-21', 'gemini-2.0-flash-exp'],
+      models: ['gemini-3.1-pro-preview', 'gemini-2.5-pro', 'gemini-2.5-flash'],
     };
   } catch (error) {
     return {
@@ -200,15 +200,25 @@ async function checkPerplexity(): Promise<DoctorResult> {
   }
 
   try {
-    // Perplexity uses OpenAI-compatible API
-    const adapter = new OpenAIAdapter(apiKey, 'sonar', 'https://api.perplexity.ai');
-
-    await adapter.execute({
-      systemPrompt: 'You are a test.',
-      userPrompt: 'Say "ok"',
-      maxTokens: 10,
-      timeout: 10000,
+    // Perplexity uses OpenAI-compatible API but does not support response_format
+    const response = await fetch('https://api.perplexity.ai/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'sonar',
+        messages: [{ role: 'user', content: 'Say "ok"' }],
+        max_tokens: 10,
+      }),
+      signal: AbortSignal.timeout(10000),
     });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`${response.status} ${text}`);
+    }
 
     return {
       provider: 'Perplexity (Research)',

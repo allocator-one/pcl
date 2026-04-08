@@ -28,7 +28,7 @@ export function getDefaultModels(): ModelConfig[] {
   if (googleApiKey) {
     models.push({
       provider: 'google',
-      model: 'gemini-2.5-pro',
+      model: 'gemini-3.1-pro-preview',
       apiKey: googleApiKey,
       // No maxOutputTokens for thinking models
     });
@@ -55,8 +55,11 @@ export const MODEL_ALIASES: Record<string, { provider: string; model: string }> 
   'o1': { provider: 'openai', model: 'o1' },
   'o3': { provider: 'openai', model: 'o3' },
 
-  'gemini': { provider: 'google', model: 'gemini-2.5-pro' },
-  'gemini-2': { provider: 'google', model: 'gemini-2.0-flash' },
+  'gemini': { provider: 'google', model: 'gemini-3.1-pro-preview' },
+  'gemini-3': { provider: 'google', model: 'gemini-3.1-pro-preview' },
+  'gemini-3.1': { provider: 'google', model: 'gemini-3.1-pro-preview' },
+  'gemini-3.1-pro': { provider: 'google', model: 'gemini-3.1-pro-preview' },
+  'gemini-2': { provider: 'google', model: 'gemini-2.5-flash' },
   'gemini-2.5': { provider: 'google', model: 'gemini-2.5-pro' },
   'gemini-2.5-pro': { provider: 'google', model: 'gemini-2.5-pro' },
   'gemini-2.5-flash': { provider: 'google', model: 'gemini-2.5-flash' },
