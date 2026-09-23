@@ -43,7 +43,7 @@ pcl plan spec.md
 pcl plan "Add caching" --estimate
 
 # Use specific models
-pcl plan "Add caching" --models opus,gpt-5.4,gemini-2.5-pro
+pcl plan "Add caching" --models opus,gpt-5.6,gemini
 
 # Output as markdown
 pcl plan "Add caching" --markdown --output plan.md
@@ -71,15 +71,15 @@ Example configuration:
   "models": [
     {
       "provider": "anthropic",
-      "model": "claude-opus-4-6"
+      "model": "claude-opus-5-5"
     },
     {
       "provider": "openai",
-      "model": "gpt-5.4"
+      "model": "gpt-5.6-sol"
     },
     {
       "provider": "google",
-      "model": "gemini-2.5-pro"
+      "model": "gemini-3.1-pro-preview"
     }
   ],
   "github": {
@@ -89,22 +89,22 @@ Example configuration:
 ```
 
 **Model Auto-Detection**: If no models are specified, pcl automatically detects available API keys:
-- `ANTHROPIC_API_KEY` → claude-opus-4-6
-- `OPENAI_API_KEY` → gpt-5.4
-- `GOOGLE_API_KEY` or `GEMINI_API_KEY` → gemini-2.5-pro
+- `ANTHROPIC_API_KEY` → claude-opus-5-5
+- `OPENAI_API_KEY` → gpt-5.6-sol
+- `GOOGLE_API_KEY` or `GEMINI_API_KEY` → gemini-3.1-pro-preview
 
 ## Model Aliases
 
 Use shorthand names instead of full model IDs:
 
 ```bash
-pcl plan "Add feature" --models opus,gpt-5,gemini
+pcl plan "Add feature" --models opus,gpt-5.6,gemini
 ```
 
 Supported aliases:
-- **Anthropic**: `opus`, `sonnet`, `haiku`
-- **OpenAI**: `gpt-5`, `gpt-4o`, `o1`, `o3`
-- **Google**: `gemini`, `gemini-2.5-pro`, `gemini-2.5-flash`
+- **Anthropic**: `opus`, `fable`, `sonnet`, `haiku`
+- **OpenAI**: `gpt-5.6`, `gpt-5.4`, `gpt-5`, `gpt-4o`, `o3`
+- **Google**: `gemini`, `gemini-flash`, `gemini-2.5-pro`, `gemini-2.5-flash`
 
 ## Planning Depths
 

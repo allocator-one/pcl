@@ -112,7 +112,7 @@ export function parseModelString(modelString: string): ModelConfig {
   if (modelString.startsWith('claude-')) {
     return { provider: 'anthropic', model: modelString };
   }
-  if (modelString.startsWith('gpt-') || modelString.startsWith('o1') || modelString.startsWith('o3')) {
+  if (modelString.startsWith('gpt-') || /^o[1-9]/.test(modelString)) {
     return { provider: 'openai', model: modelString };
   }
   if (modelString.startsWith('gemini-')) {

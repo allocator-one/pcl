@@ -82,24 +82,21 @@ export function getProfile(profile: 'fast' | 'thorough'): Partial<PlanCouncilCon
     case 'fast':
       return {
         models: [
-          { provider: 'anthropic', model: 'claude-3-haiku-20240307' },
-          { provider: 'openai', model: 'gpt-4o-mini' },
-          { provider: 'google', model: 'gemini-2.0-flash-exp' },
+          { provider: 'anthropic', model: 'claude-haiku-4-5-20251001' },
+          { provider: 'openai', model: 'gpt-5.6-luna' },
+          { provider: 'google', model: 'gemini-3.5-flash-lite' },
         ],
         timeout: 30000,
         deduplicationThreshold: 0.8, // More aggressive deduplication
       };
 
     case 'thorough':
-      // These are current SOTA models as of 2026. Update when newer flagships are released.
+      // Flagships as of 2026-09. Update when newer ones are released.
       return {
         models: [
-          // claude-opus-4-6: Anthropic's Opus 4.6 flagship model (released 2025)
-          { provider: 'anthropic', model: 'claude-opus-4-6' },
-          // gpt-5.4: OpenAI's GPT-5 series model (released 2025)
-          { provider: 'openai', model: 'gpt-5.4' },
-          // gemini-2.5-pro-exp-03-25: Google's Gemini 2.5 Pro experimental (March 2025)
-          { provider: 'google', model: 'gemini-2.5-pro-exp-03-25' },
+          { provider: 'anthropic', model: 'claude-opus-5-5' },
+          { provider: 'openai', model: 'gpt-5.6-sol' },
+          { provider: 'google', model: 'gemini-3.1-pro-preview' },
         ],
         timeout: 120000,
         deduplicationThreshold: 0.6, // Less aggressive - preserve variations

@@ -5,7 +5,7 @@ describe('config/loader', () => {
   describe('parseModelString', () => {
     it('should parse aliases', () => {
       const result = parseModelString('opus');
-      expect(result).toEqual({ provider: 'anthropic', model: 'claude-opus-4-6' });
+      expect(result).toEqual({ provider: 'anthropic', model: 'claude-opus-5-5' });
     });
 
     it('should parse provider:model format', () => {
@@ -39,8 +39,12 @@ describe('config/loader', () => {
     });
 
     it('should infer anthropic from claude- prefix', () => {
-      const result = parseModelString('claude-sonnet-4');
-      expect(result).toEqual({ provider: 'anthropic', model: 'claude-sonnet-4' });
+      const result = parseModelString('claude-sonnet-5');
+      expect(result).toEqual({ provider: 'anthropic', model: 'claude-sonnet-5' });
+    });
+
+    it('should infer openai from any o-series prefix', () => {
+      expect(parseModelString('o4-mini')).toEqual({ provider: 'openai', model: 'o4-mini' });
     });
 
     it('should infer openai from gpt- prefix', () => {
@@ -75,7 +79,7 @@ describe('config/loader', () => {
     it('should parse comma-separated models', () => {
       const result = parseModelsOption('opus,gpt-5,gemini-2.5-pro');
       expect(result).toEqual([
-        { provider: 'anthropic', model: 'claude-opus-4-6' },
+        { provider: 'anthropic', model: 'claude-opus-5-5' },
         { provider: 'openai', model: 'gpt-5' },
         { provider: 'google', model: 'gemini-2.5-pro' },
       ]);
@@ -84,7 +88,7 @@ describe('config/loader', () => {
     it('should trim whitespace', () => {
       const result = parseModelsOption(' opus , gpt-5 ');
       expect(result).toEqual([
-        { provider: 'anthropic', model: 'claude-opus-4-6' },
+        { provider: 'anthropic', model: 'claude-opus-5-5' },
         { provider: 'openai', model: 'gpt-5' },
       ]);
     });
