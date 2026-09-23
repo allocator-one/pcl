@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { ModelAdapter, PlanRequest, PlanResponse } from './adapter.js';
 import { STEP_CATEGORIES } from '../consensus/types.js';
+import { getModelCapabilities } from './capabilities.js';
 
 export class AnthropicAdapter implements ModelAdapter {
   private client: Anthropic;
@@ -20,10 +21,14 @@ export class AnthropicAdapter implements ModelAdapter {
    * @throws {Error} On API errors, network failures, or invalid responses
    */
   async execute(request: PlanRequest): Promise<PlanResponse> {
+    const capabilities = getModelCapabilities('anthropic', this.model);
+
     const response = await this.client.messages.create({
       model: this.model,
       max_tokens: request.maxTokens || 32768,
-      temperature: request.temperature,
+      ...(capabilities.supportsTemperature && request.temperature !== undefined
+        ? { temperature: request.temperature }
+        : {}),
       system: request.systemPrompt,
       messages: [
         {
@@ -90,7 +95,11 @@ export class AnthropicAdapter implements ModelAdapter {
           },
         },
       ],
-      tool_choice: { type: 'tool', name: 'create_plan' },
+      // Without forced choice the model can still answer in text; the missing
+      // tool_use block below then throws and the runner retries.
+      tool_choice: capabilities.supportsForcedToolChoice
+        ? { type: 'tool', name: 'create_plan' }
+        : { type: 'auto' },
     });
 
     const toolUse = response.content.find((c) => c.type === 'tool_use') as Anthropic.ToolUseBlock | undefined;

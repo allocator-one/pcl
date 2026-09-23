@@ -65,7 +65,7 @@ describe('cost/estimator', () => {
 
     it('should calculate cost correctly with zero input', () => {
       const models: ModelConfig[] = [
-        { provider: 'anthropic', model: 'claude-haiku-4' },
+        { provider: 'anthropic', model: 'claude-haiku-4-5-20251001' },
       ];
       const estimate = estimateCost(models, '', 1000);
 

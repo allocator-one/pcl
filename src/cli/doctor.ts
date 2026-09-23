@@ -88,7 +88,7 @@ async function checkAnthropic(): Promise<DoctorResult> {
 
   try {
     // Try to create adapter and make a minimal test call
-    const adapter = new AnthropicAdapter(apiKey, 'claude-3-haiku-20240307');
+    const adapter = new AnthropicAdapter(apiKey, 'claude-haiku-4-5-20251001');
 
     // Test with minimal input
     await adapter.execute({
@@ -103,7 +103,7 @@ async function checkAnthropic(): Promise<DoctorResult> {
       status: 'ok',
       message: 'Connected successfully',
       // Known models as of 2026; update when new models are released.
-      models: ['claude-opus-4-6', 'claude-3-7-sonnet-20250219', 'claude-3-5-sonnet-20241022', 'claude-3-haiku-20240307'],
+      models: ['claude-opus-5-5', 'claude-fable-5-1', 'claude-sonnet-5', 'claude-haiku-4-5-20251001'],
     };
   } catch (error) {
     return {
@@ -126,7 +126,7 @@ async function checkOpenAI(): Promise<DoctorResult> {
   }
 
   try {
-    const adapter = new OpenAIAdapter(apiKey, 'gpt-4o-mini');
+    const adapter = new OpenAIAdapter(apiKey, 'gpt-5.6-luna');
 
     await adapter.execute({
       systemPrompt: 'You are a test.',
@@ -140,7 +140,7 @@ async function checkOpenAI(): Promise<DoctorResult> {
       status: 'ok',
       message: 'Connected successfully',
       // Known models as of 2026; update when new models are released.
-      models: ['gpt-5.4', 'gpt-4o', 'gpt-4o-mini', 'o1', 'o1-mini', 'o3-mini'],
+      models: ['gpt-5.6-sol', 'gpt-5.6-terra', 'gpt-5.6-luna', 'gpt-5.5', 'o3', 'o4-mini'],
     };
   } catch (error) {
     return {
@@ -177,7 +177,7 @@ async function checkGoogle(): Promise<DoctorResult> {
       status: 'ok',
       message: 'Connected successfully',
       // Known models as of 2026; update when new models are released.
-      models: ['gemini-3.1-pro-preview', 'gemini-2.5-pro', 'gemini-2.5-flash'],
+      models: ['gemini-3.1-pro-preview', 'gemini-3.8-flash', 'gemini-3.5-flash-lite'],
     };
   } catch (error) {
     return {

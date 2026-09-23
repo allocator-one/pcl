@@ -3,27 +3,27 @@ import { ModelConfig } from './schema.js';
 export function getDefaultModels(): ModelConfig[] {
   const models: ModelConfig[] = [];
 
-  // Auto-detect Anthropic (Opus 4.6)
+  // Auto-detect Anthropic (Opus 5.5)
   if (process.env.ANTHROPIC_API_KEY) {
     models.push({
       provider: 'anthropic',
-      model: 'claude-opus-4-6',
+      model: 'claude-opus-5-5',
       apiKey: process.env.ANTHROPIC_API_KEY,
       maxTokens: 32768, // Anthropic requires max_tokens
     });
   }
 
-  // Auto-detect OpenAI (GPT-5.4)
+  // Auto-detect OpenAI (GPT-5.6 Sol)
   if (process.env.OPENAI_API_KEY) {
     models.push({
       provider: 'openai',
-      model: 'gpt-5.4',
+      model: 'gpt-5.6-sol',
       apiKey: process.env.OPENAI_API_KEY,
       // No maxTokens cap - let it run
     });
   }
 
-  // Auto-detect Google (Gemini 2.5 Pro)
+  // Auto-detect Google (Gemini 3.1 Pro)
   const googleApiKey = process.env.GOOGLE_API_KEY?.trim() || process.env.GEMINI_API_KEY?.trim();
   if (googleApiKey) {
     models.push({
@@ -38,16 +38,19 @@ export function getDefaultModels(): ModelConfig[] {
 }
 
 export const MODEL_ALIASES: Record<string, { provider: string; model: string }> = {
-  'opus': { provider: 'anthropic', model: 'claude-opus-4-6' },
-  'opus-4': { provider: 'anthropic', model: 'claude-opus-4' },
+  'opus': { provider: 'anthropic', model: 'claude-opus-5-5' },
+  'opus-5-5': { provider: 'anthropic', model: 'claude-opus-5-5' },
+  'opus-5': { provider: 'anthropic', model: 'claude-opus-5' },
   'opus-4-6': { provider: 'anthropic', model: 'claude-opus-4-6' },
-  'sonnet': { provider: 'anthropic', model: 'claude-sonnet-4-5-20250929' },
-  'sonnet-4': { provider: 'anthropic', model: 'claude-sonnet-4' },
+  'fable': { provider: 'anthropic', model: 'claude-fable-5-1' },
+  'fable-5-1': { provider: 'anthropic', model: 'claude-fable-5-1' },
+  'sonnet': { provider: 'anthropic', model: 'claude-sonnet-5' },
+  'sonnet-5': { provider: 'anthropic', model: 'claude-sonnet-5' },
   'sonnet-4-5': { provider: 'anthropic', model: 'claude-sonnet-4-5-20250929' },
   'haiku': { provider: 'anthropic', model: 'claude-haiku-4-5-20251001' },
-  'haiku-4': { provider: 'anthropic', model: 'claude-haiku-4' },
   'haiku-4-5': { provider: 'anthropic', model: 'claude-haiku-4-5-20251001' },
 
+  'gpt-5.6': { provider: 'openai', model: 'gpt-5.6-sol' },
   'gpt-5': { provider: 'openai', model: 'gpt-5' },
   'gpt-5.4': { provider: 'openai', model: 'gpt-5.4' },
   'gpt-4': { provider: 'openai', model: 'gpt-4-turbo' },
@@ -59,6 +62,7 @@ export const MODEL_ALIASES: Record<string, { provider: string; model: string }> 
   'gemini-3': { provider: 'google', model: 'gemini-3.1-pro-preview' },
   'gemini-3.1': { provider: 'google', model: 'gemini-3.1-pro-preview' },
   'gemini-3.1-pro': { provider: 'google', model: 'gemini-3.1-pro-preview' },
+  'gemini-flash': { provider: 'google', model: 'gemini-3.8-flash' },
   'gemini-2': { provider: 'google', model: 'gemini-2.5-flash' },
   'gemini-2.5': { provider: 'google', model: 'gemini-2.5-pro' },
   'gemini-2.5-pro': { provider: 'google', model: 'gemini-2.5-pro' },
